@@ -4,3 +4,5 @@ DB_API_KEY=###Parâmetro de autenticação
 DB_PASSWORD=###Parâmetro de autenticação
 EMAIL=###Parâmetro de autenticação
 SERVER_KEY=###Chave do firebase para envio de mensagens
+NOTIFICATION_ICON=###Ícone que será apresentado na notificação
+NOTIFICATION_URL=###Url para redirecionamento da notificação

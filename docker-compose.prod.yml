@@ -1,0 +1,7 @@
+version: '3'
+services:
+   notifications:
+      image: boa50/notificacoes
+      volumes:
+         - .:/usr/src
+      command: ["python", "EnviaNotificacoes.py"]
