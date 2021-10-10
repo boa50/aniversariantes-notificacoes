@@ -1,4 +1,3 @@
-config.ini
-config.ini.save
 notificacoes.log
 .ipynb_checkpoints
+.env
