@@ -1,3 +1,5 @@
 notificacoes.log
 .ipynb_checkpoints
+*.env
 .env
+__pycache__
