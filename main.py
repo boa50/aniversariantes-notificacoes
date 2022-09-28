@@ -1,3 +1,4 @@
+from flask import Flask
 import requests
 import json
 import io
@@ -167,3 +168,13 @@ def process_notifications():
                 escreve_log(usuario_token, response)
 
                 time.sleep(5)
+
+    return 'Notificações enviadas com sucesso'
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return process_notifications()
+
+app.run(debug=True)
