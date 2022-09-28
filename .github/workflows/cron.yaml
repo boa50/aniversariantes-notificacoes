@@ -1,0 +1,11 @@
+name: daily-cron
+on:
+  schedule:
+    - cron: '* * * * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Notifications
+        run: |
+          curl --url 'https://aniversariantes-notificacoes-pdsj.vercel.app/'
