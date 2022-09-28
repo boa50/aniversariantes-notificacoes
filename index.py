@@ -178,4 +178,4 @@ def home():
     # return process_notifications()
     return 'Notificações enviadas com sucesso'
 
-app.run(debug=False)
+# app.run(debug=False)
