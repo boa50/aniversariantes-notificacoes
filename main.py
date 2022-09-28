@@ -175,6 +175,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return process_notifications()
+    # return process_notifications()
+    return 'Notificações enviadas com sucesso'
 
 app.run(debug=True)
