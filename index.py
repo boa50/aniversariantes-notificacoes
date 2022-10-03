@@ -27,6 +27,28 @@ SERVER_KEY = os.environ.get('SERVER_KEY')
 NOTIFICATION_ICON = os.environ.get('NOTIFICATION_ICON')
 NOTIFICATION_URL = os.environ.get('NOTIFICATION_URL')
 
+### WebApp
+from celery import Celery
+
+def make_celery(app):
+    celery = Celery(
+        app.import_name,
+        broker='redis://:8nEwSMDQx4RqMHAff5fh7HwIRsmmfsUS@redis-18329.c89.us-east-1-3.ec2.cloud.redislabs.com:18329/0'
+    )
+    celery.conf.update(app.config)
+
+    class ContextTask(celery.Task):
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return self.run(*args, **kwargs)
+
+    celery.Task = ContextTask
+    return celery
+
+app = Flask(__name__)
+celery = make_celery(app)
+
+
 
 def get_dados(url, headers):
     response = requests.get(url, headers=headers)
@@ -124,7 +146,8 @@ def escreve_log(usuario_token, response):
     log_texto += '\n'
     
     print(log_texto)
-        
+
+@celery.task
 def process_notifications():
     authUrl = f'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={DB_API_KEY}'
 
@@ -167,12 +190,8 @@ def process_notifications():
 
                 escreve_log(usuario_token, response)
 
-                time.sleep(5)
-
-    return 'Notificações enviadas com sucesso'
-
-app = Flask(__name__)
-
 @app.route('/')
 def home():
-    return process_notifications()
+    process_notifications.delay()
+    return 'Notificações sendo processadas'
+    

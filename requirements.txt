@@ -3,3 +3,5 @@ requests
 pytz
 python-dotenv==0.19.*
 APScheduler==3.8.*
+celery==5.2.*
+celery[redis]
