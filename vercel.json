@@ -1,17 +1,6 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "./index.py",
-            "use": "@vercel/python"
-        }
-    ],
-    "buildCommand": "celery -A index.celery worker &",
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
-        }
-    ],
-    "outputDirectory": "."
+    "rewrites": [
+        { "source": "/(.*)", "destination": "/index" }
+    ]
 }
