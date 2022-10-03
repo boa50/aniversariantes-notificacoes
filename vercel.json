@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "buildCommand": "celery -A index.celery worker",
+    "buildCommand": "celery -A index.celery worker &",
     "routes": [
         {
             "src": "/(.*)",
