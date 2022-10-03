@@ -1,5 +1,8 @@
 {
-    "buildCommand": "flask --app index run & celery -A index.celery worker &",
+    "buildCommand": "celery -A index.celery worker &",
+    "functions": {
+        "index.py": {}
+    },
     "routes": [
         {
             "src": "/(.*)",
