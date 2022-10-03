@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "buildCommand": "pip install requirements.txt && flask --app index run",
+    "buildCommand": "flask --app index run",
     "routes": [
         {
             "src": "/(.*)",
