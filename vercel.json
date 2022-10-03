@@ -6,5 +6,5 @@
             "dest": "/"
         }
     ],
-    "outputDirectory": "."
+    "outputDirectory": "/vercel/output"
 }
