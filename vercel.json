@@ -1,10 +1,16 @@
 {
-    "buildCommand": "flask --app index --debug run & celery -A index.celery worker &",
+    "builds": [
+        {
+            "src": "./index.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "installCommand": "celery -A index.celery worker &",
     "routes": [
         {
             "src": "/(.*)",
             "dest": "/"
         }
     ],
-    "outputDirectory": "/vercel/build"
+    "outputDirectory": "."
 }
