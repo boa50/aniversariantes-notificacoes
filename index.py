@@ -176,7 +176,6 @@ def process_notifications():
 @app.route('/')
 def home():
     thread = threading.Thread(target=process_notifications)
-    thread.daemon = True
     thread.start()
     return 'Notificações sendo processadas'
     
