@@ -27,12 +27,6 @@ SERVER_KEY = os.environ.get('SERVER_KEY')
 NOTIFICATION_ICON = os.environ.get('NOTIFICATION_ICON')
 NOTIFICATION_URL = os.environ.get('NOTIFICATION_URL')
 
-### WebApp
-import threading
-
-app = Flask(__name__)
-
-
 
 def get_dados(url, headers):
     response = requests.get(url, headers=headers)
@@ -171,8 +165,9 @@ def process_notifications():
                 envia_notificacao(texto, familia_nome, usuario_token)
 
                 # response = envia_notificacao(texto, familia_nome, usuario_token)
-
                 # escreve_log(usuario_token, response)
+
+app = Flask(__name__)
 
 @app.route('/')
 def home():
