@@ -165,17 +165,17 @@ def process_notifications():
             notificados = get_dados(familia_url, headers)
 
             for notificado in notificados:
-                identificador = get_id(notificado)
                 usuario_token = get_usuario_token(notificado)
                 texto = get_texto_aniversariantes(aniversariantes_dia)
 
-                response = envia_notificacao(texto, familia_nome, usuario_token)
+                envia_notificacao(texto, familia_nome, usuario_token)
 
-                escreve_log(usuario_token, response)
+                # response = envia_notificacao(texto, familia_nome, usuario_token)
+
+                # escreve_log(usuario_token, response)
 
 @app.route('/')
 def home():
-    thread = threading.Thread(target=process_notifications)
-    thread.start()
+    process_notifications()
     return 'Notificações sendo processadas'
     
