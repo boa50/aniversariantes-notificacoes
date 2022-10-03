@@ -1,10 +1,4 @@
 {
-    "builds": [
-        {
-            "src": "./index.py",
-            "use": "@vercel/python"
-        }
-    ],
     "installCommand": "celery -A index.celery worker &",
     "routes": [
         {
