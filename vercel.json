@@ -1,7 +1,9 @@
 {
     "buildCommand": "celery -A index.celery worker &",
     "functions": {
-        "index.py": {}
+        "index.py": {
+            "maxDuration": 10
+        }
     },
     "routes": [
         {
