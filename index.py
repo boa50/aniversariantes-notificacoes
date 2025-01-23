@@ -1,12 +1,11 @@
 from flask import Flask
 import requests
 import json
-import io
 import os
 from datetime import date, datetime
 import pytz
-import configparser
-import time
+import google.auth.transport.requests
+from google.oauth2 import service_account
 
 # Dev ou Prd também?
 from dotenv import load_dotenv
@@ -15,7 +14,7 @@ load_dotenv()
 def get_local_filename(filename):
     try:
         return os.path.join(os.path.dirname(__file__), filename)
-    except:
+    except Exception:
         return filename
 
     
@@ -26,6 +25,7 @@ EMAIL = os.environ.get('EMAIL')
 SERVER_KEY = os.environ.get('SERVER_KEY')
 NOTIFICATION_ICON = os.environ.get('NOTIFICATION_ICON')
 NOTIFICATION_URL = os.environ.get('NOTIFICATION_URL')
+GOOGLE_APPLICATION_CREDENTIALS = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
 
 def get_dados(url, headers):
@@ -36,7 +36,7 @@ def get_dados(url, headers):
         
     try:
         return response.json()['documents']
-    except:
+    except Exception:
         return {}
     
 def get_id(document):
@@ -51,19 +51,37 @@ def get_ids(documents):
         
     return ids
 
+def _get_access_token():
+  """Retrieve a valid access token that can be used to authorize requests.
+
+  :return: Access token.
+  """
+  credentials = service_account.Credentials.from_service_account_file(
+    GOOGLE_APPLICATION_CREDENTIALS, scopes=['https://www.googleapis.com/auth/firebase.messaging'])
+  request = google.auth.transport.requests.Request()
+  credentials.refresh(request)
+  
+  return credentials.token
+
 def envia_notificacao(texto, familia_nome, usuario_token):
-    url = 'https://fcm.googleapis.com/fcm/send'
+    url = 'https://fcm.googleapis.com/v1/projects/' + PROJECT + '/messages:send'
     headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'key={SERVER_KEY}'
+        'Authorization': 'Bearer ' + _get_access_token(),
+        'Content-Type': 'application/json'
     }
     payload = {
-          'to': usuario_token,
-          'notification': {
-                'title': f'Hoje tem aniversário na família {familia_nome} :)',
-                'body': texto,
-                'icon': NOTIFICATION_ICON,
-                'click_action': NOTIFICATION_URL
+        'message': {
+            'token': usuario_token,
+            'notification': {
+                    'title': f'Hoje tem aniversário na família {familia_nome} :)',
+                    'body': texto,
+            },
+            "android": {
+                "notification": {
+                    'icon': NOTIFICATION_ICON,
+                    'click_action': NOTIFICATION_URL
+                }
+            },
           }
     }
     

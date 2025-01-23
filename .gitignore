@@ -1,5 +1,7 @@
+.venv
 notificacoes.log
 .ipynb_checkpoints
 *.env
 .env
+service-account.json
 __pycache__
