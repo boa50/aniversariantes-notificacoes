@@ -167,7 +167,7 @@ def process_notifications():
         'email': EMAIL,
         'password': DB_PASSWORD,
         'returnSecureToken': True,
-    };
+    }
 
     resp = requests.post(authUrl, data=json.dumps(authData))
     if resp.status_code != 200:
