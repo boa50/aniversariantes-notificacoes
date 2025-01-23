@@ -25,7 +25,6 @@ EMAIL = os.environ.get('EMAIL')
 SERVER_KEY = os.environ.get('SERVER_KEY')
 NOTIFICATION_ICON = os.environ.get('NOTIFICATION_ICON')
 NOTIFICATION_URL = os.environ.get('NOTIFICATION_URL')
-GOOGLE_APPLICATION_CREDENTIALS = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
 
 def get_dados(url, headers):
@@ -56,8 +55,26 @@ def _get_access_token():
 
   :return: Access token.
   """
-  credentials = service_account.Credentials.from_service_account_file(
-    GOOGLE_APPLICATION_CREDENTIALS, scopes=['https://www.googleapis.com/auth/firebase.messaging'])
+  
+  ### Used this way to work with Vercel ;(
+  service_account_data = {
+    'type': os.environ.get('GCP_type'),
+    'project_id': os.environ.get('GCP_project_id'),
+    'private_key_id': os.environ.get('GCP_private_key_id'),
+    'private_key': os.environ.get('GCP_private_key'),
+    'client_email': os.environ.get('GCP_client_email'),
+    'client_id': os.environ.get('GCP_client_id'),
+    'auth_uri': os.environ.get('GCP_auth_uri'),
+    'token_uri': os.environ.get('GCP_token_uri'),
+    'auth_provider_x509_cert_url': os.environ.get('GCP_auth_provider_x509_cert_url'),
+    'client_x509_cert_url': os.environ.get('GCP_client_x509_cert_url'),
+    'universe_domain': os.environ.get('GCP_universe_domain'),
+  }
+  credentials = service_account.Credentials.from_service_account_info(
+    service_account_data, scopes=['https://www.googleapis.com/auth/firebase.messaging'])
+  
+#   credentials = service_account.Credentials.from_service_account_file(
+#     'service-account.json', scopes=['https://www.googleapis.com/auth/firebase.messaging'])
   request = google.auth.transport.requests.Request()
   credentials.refresh(request)
   
@@ -191,4 +208,3 @@ app = Flask(__name__)
 def home():
     process_notifications()
     return 'Notificações sendo processadas'
-    
